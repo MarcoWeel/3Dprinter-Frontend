@@ -1,0 +1,18 @@
+name: Create and publish Docker image
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build -t registry.mweel.nl/printerfrontend:latest .
+    - name: Login to registry
+      run: docker login registry.mweel.nl -u ${{ secrets.USER }} -p ${{ secrets.PASS }}
+    - name: Push the Docker image
+      run: docker push registry.mweel.nl/printerfrontend:latest
